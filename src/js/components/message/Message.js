@@ -2,15 +2,17 @@ import moment from 'moment/moment';
 import './message.css';
 
 class Message {
-	constructor(parentElement, data) {
+	constructor(parentElement, data, messageWidget) {
 		this.parentElement = parentElement;
 		this.data = data;
+		this.messageWidget = messageWidget;
 
 		this.element = null;
 
 		this.markUp = this.markUp.bind(this);
 		this.bindToDOM = this.bindToDOM.bind(this);
 		this.setTopicLength = this.setTopicLength.bind(this);
+		this.onViewFullMessage = this.onViewFullMessage.bind(this);
 	}
 
 	setTopicLength() {
@@ -44,6 +46,14 @@ class Message {
 		this.element.innerHTML = this.markUp();
 
 		this.parentElement.insertAdjacentElement('afterbegin', this.element);
+
+		this.element.addEventListener('click', this.onViewFullMessage);
+	}
+
+	onViewFullMessage(e) {
+		if (e.currentTarget === this.element) {
+			this.messageWidget.onViewFullMessage(this.data);
+		}
 	}
 }
 

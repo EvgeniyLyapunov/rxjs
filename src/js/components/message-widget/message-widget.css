@@ -123,6 +123,12 @@
   background-color: yellow;
 }
 
+.message-container {
+  position: fixed;
+  width: 20%;
+  min-height: 500px;
+}
+
 .messages-list {
   width: 65%;
   margin-left: auto;

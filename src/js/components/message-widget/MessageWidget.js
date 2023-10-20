@@ -1,5 +1,6 @@
 import MessageService from '../../MessageService';
 import Message from '../message/Message';
+import ViewMessage from '../view-message/ViewMessage';
 import moment from 'moment/moment';
 
 import './message-widget.css';
@@ -14,6 +15,7 @@ class MessageWidget {
 
 		this.widgetElement = null;
 		this.messagesList = null;
+		this.fullMessageContainer = null;
 		this.btnOn = null;
 		this.btnOff = null;
 
@@ -25,6 +27,7 @@ class MessageWidget {
 		this.startReceiveMessages = this.startReceiveMessages.bind(this);
 		this.stoptReceiveMessages = this.stoptReceiveMessages.bind(this);
 		this.renderMessage = this.renderMessage.bind(this);
+		this.onViewFullMessage = this.onViewFullMessage.bind(this);
 	}
 
 	markUp() {
@@ -54,6 +57,7 @@ class MessageWidget {
 					</div>
 				</div>
 			</header>
+			<div class="message-container"></div>
 			<ul class="messages-list"></ul>
 		`;
 	}
@@ -66,6 +70,7 @@ class MessageWidget {
 		this.parentElement.insertAdjacentElement('beforeend', this.widgetElement);
 
 		this.messagesList = this.widgetElement.querySelector('.messages-list');
+		this.fullMessageContainer = this.widgetElement.querySelector('.message-container');
 		this.btnOn = this.widgetElement.querySelector('.control-panel__btn_on');
 		this.btnOff = this.widgetElement.querySelector('.control-panel__btn_off');
 
@@ -108,11 +113,15 @@ class MessageWidget {
 		}
 
 		value.forEach((item) => {
-			new Message(this.messagesList, item).bindToDOM();
+			new Message(this.messagesList, item, this).bindToDOM();
 		});
 
 		this.countInfo.textContent = this.messagesList.querySelectorAll('li').length;
 		this.timeReceived.textContent = moment().format('HH:mm:ss DD.MM.YY');
+	}
+
+	onViewFullMessage(data) {
+		new ViewMessage(this.fullMessageContainer, data).bindToDOM();
 	}
 }
 
