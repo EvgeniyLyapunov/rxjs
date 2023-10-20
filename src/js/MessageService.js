@@ -18,7 +18,7 @@ class MessageService {
 							return [];
 						}
 					}),
-					catchError((error) => {
+					catchError(() => {
 						return of([]);
 					})
 				);
